@@ -1,20 +1,44 @@
-Distributed API Gateway with Redis Rate Limiting
-A scalable distributed backend built with Spring Boot, Spring Cloud Gateway, Redis, and Docker — featuring centralized routing, token bucket rate limiting, and horizontal scaling.
+# Distributed API Gateway with Redis Rate Limiting
 
-Architecture
-Client → Gateway (:6060) → RateLimitFilter → Redis Token Bucket → Load Balancer → Backend Instances (:9091 / :9092 / :9093)
-Tech Stack
-LayerToolsBackendJava 17, Spring Boot 3, Spring WebFluxGatewaySpring Cloud Gateway, Spring Cloud LoadBalancerRate LimitingRedis, Lua ScriptingDevOpsDocker, Docker Compose
-Rate Limiting
-Token Bucket algorithm backed by atomic Redis Lua scripts.
-EndpointLimit/login5 req/min/search20 req/min/payment2 req/min
-Every response includes quota headers:
+A scalable distributed backend with centralized API routing, token bucket rate limiting, and horizontal scaling.
+
+**Stack:** Java 17, Spring Boot 3, Spring Cloud Gateway, Spring WebFlux, Redis, Docker
+
+---
+
+### Features
+
+- Centralized API routing via Spring Cloud Gateway
+- Distributed token bucket rate limiting using Redis + Lua scripts
+- Load balancing across multiple backend instances
+- Custom response headers for quota tracking
+- Reactive request filtering with WebFlux
+
+---
+
+### Rate Limits
+
+| Endpoint | Limit |
+|----------|-------|
+| `/login` | 5 req/min |
+| `/search` | 20 req/min |
+| `/payment` | 2 req/min |
+
+Response headers on every request:
+
+```
 X-RateLimit-Limit: 5
 X-RateLimit-Remaining: 3
 X-RateLimit-Refill-Time: 42
 Retry-After: 60
-Quick Start
-bash# Start Redis
+```
+
+---
+
+### Quick Start
+
+```bash
+# Start Redis
 docker run --name redis -p 6379:6379 redis
 
 # Run backend instances on ports 9091, 9092, 9093
@@ -22,22 +46,19 @@ docker run --name redis -p 6379:6379 redis
 
 # Test
 GET http://localhost:6060/login
-Project Structure
-gateway-service/
-├── filter/        # RateLimitFilter (GlobalFilter)
-├── service/       # TokenBucketService
-├── config/        # LoadBalancerConfig
-└── model/         # RateLimitResponse
-Key Concepts
-Distributed Rate Limiting · Token Bucket Algorithm · Reactive Programming · API Gateway Pattern · Horizontal Scaling · Atomic Redis Operations
-Roadmap
+```
 
- JWT Authentication & role-based rate limits
- Circuit Breaker Pattern
- Prometheus + Grafana Monitoring
- Kubernetes Deployment
- Eureka Service Discovery
- Distributed Tracing
+---
 
+### Roadmap
 
-Built by Karthikeyan Sankar · Demonstrates distributed systems, reactive backend design, and cloud-native architecture.
+- JWT Authentication & role-based rate limits
+- Circuit Breaker Pattern
+- Prometheus + Grafana Monitoring
+- Kubernetes Deployment
+- Eureka Service Discovery
+- Distributed Tracing
+
+---
+
+Built by **Karthikeyan Sankar 😎**
