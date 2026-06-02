@@ -6,7 +6,7 @@ WORKDIR /app
 # Copy Spring Boot JAR
 COPY target/*.jar app.jar
 
-# Backend exposes 9090
-EXPOSE 9090
+# Gateway exposes 6060
+EXPOSE 5050
 
 ENTRYPOINT ["java","-jar","app.jar"]

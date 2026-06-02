@@ -1,0 +1,40 @@
+services:
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  backend1:
+    build: ./backend
+    container_name: backend1
+    ports:
+      - "9091:9090"
+    depends_on:
+      - redis
+
+  backend2:
+    build: ./backend
+    container_name: backend2
+    ports:
+      - "9092:9090"
+    depends_on:
+      - redis
+
+  backend3:
+    build: ./backend
+    container_name: backend3
+    ports:
+      - "9093:9090"
+    depends_on:
+      - redis
+
+  gateway:
+    build: ./gateway-service
+    container_name: gateway
+    ports:
+      - "5050:5050"
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
